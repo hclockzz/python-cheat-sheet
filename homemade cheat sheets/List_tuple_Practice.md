@@ -466,6 +466,13 @@ for i in range(0, len(nums)):
     19
     11
 
+# Generate repeated elements in a list
+can be used to generate repeated number/characters in a list
+
+```python
+lst = ['c' * 3]
+# ['c', 'c', 'c']
+```
 
 # Generate random int list
 
