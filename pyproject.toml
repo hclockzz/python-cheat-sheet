@@ -1,0 +1,19 @@
+[project]
+name = "python-cheat-sheet"
+version = "0.1.0"
+description = "python cheat sheet published in Github"
+authors = [
+    {name = "hclockzz", email = "exceptional.clock@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["flit_core>=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+
+[tool.pdm]
+distribution = true
