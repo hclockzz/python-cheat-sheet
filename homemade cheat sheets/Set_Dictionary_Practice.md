@@ -630,6 +630,10 @@ dictionary[new_key] = dictionary.pop(old_key)
 
 ```
 
+
+
+## Basic Operations
+
 ### Add items
 ```Python
 thisdict = {
@@ -743,8 +747,45 @@ mydict = dict(thisdict)
 print(mydict)
 ```
 
+### check if dict1 is equal to dict 2
+
+can use `==` to do equal check
+
+```
+>>> d1 = {'a': 1, 'b': 2}
+>>> d2 = {'b': 2, 'a': 1}
+>>> d1 == d2
+True
+>>> d1 = {'a': [1,2,3], 'b': 2}
+>>> d2 = {'b': 2, 'a': [1,2,3]}
+>>> d1 == d2
+True
+```
+
+but `==` does work for the dictionary `.values()`
+see https://discuss.python.org/t/equivalence-of-python-dict-values/14834/6
+
+
+some alternative way is using `deepdiff`
+see https://miguendes.me/the-best-way-to-compare-two-dictionaries-in-python
+
 ## Advanced operations on dictionary
 
+
+### Access dictionary with index like list
+
+
+```python
+my_dict = {'foo': 'bar', 'spam': 'eggs'}
+next(iter(my_dict)) # outputs 'foo'
+```
+
+
+```python
+list(my_dict)[0]
+```
+
+Diff between two dictionary
 
 
 ```python
