@@ -11,47 +11,6 @@ A few examples:
 - [Regular Expression HOWTO](https://docs.python.org/3.9/howto/regex.html#regular-expression-howto)
 - [Sorting How to](https://docs.python.org/3.9/howto/sorting.html)                           
 
-## For loop and break
-
-
-```python
-input = [1,2,3,4,7,6]
-
-res = ''
-
-for num in input:
-    if num == 5:
-        res = 'found'
-        break
-else:
-    res = 'no found'
-    
-print(res)
-```
-
-    no fond
-
-
-
-```python
-input = [[1,2,3,4,7,6],[4,7],[5,8]]
-
-res = []
-
-for group in input:
-    for num in group:
-        if num == 5:
-            res.append('found')
-            break
-    else:
-        res.append('no found')
-    
-print(res)
-```
-
-    ['no found', 'no found', 'found']
-
-
 # Fundamentals
 ## [Null in Python: None](https://realpython.com/null-in-python/)
 
@@ -196,6 +155,12 @@ at startup, and then reuses them during program execution. Thus, when you assign
 integer value in this range, they will actually reference the same object.
 """
 ```
+
+### id() return the "identity" of an object
+
+Return the “identity” of an object. This is an integer which is **guaranteed to be unique** and constant for this object during its lifetime. Two objects with non-overlapping lifetimes may have the same id() value.
+
+*CPython implementation detail*: **This is the address of the object in memory**.
 
 # Number Basics
 
@@ -369,7 +334,7 @@ print(is_integer('string'))
 # False
 ```
 
-# Float and scientic notation
+## Float and scientic notation
 
 
 
@@ -407,7 +372,9 @@ chr(65)  #--> 'A'
 chr(127) #--> '\x7f' memory address of [DEL] in hex
 ```
 
-# If...Else...
+# Control Flow and Operator
+
+### If...Else...
 
 Simplier way to write:
 ```Python
@@ -420,7 +387,97 @@ else:
 num = ... if flag>0 else ...
 ```
 
+## For loop and break
+
+
+```python
+input = [1,2,3,4,7,6]
+
+res = ''
+
+for num in input:
+    if num == 5:
+        res = 'found'
+        break
+else:
+    res = 'no found'
+    
+print(res)
+```
+
+    no fond
+
+
+
+```python
+input = [[1,2,3,4,7,6],[4,7],[5,8]]
+
+res = []
+
+for group in input:
+    for num in group:
+        if num == 5:
+            res.append('found')
+            break
+    else:
+        res.append('no found')
+    
+print(res)
+```
+
+    ['no found', 'no found', 'found']
+
+
+### := walrus operator (since 3.8)
+
+
+```python
+a = list(range(12))
+if (n := len(a)) > 10:
+    print(f"List is too long ({n} elements, expected <= 10)")
+```
+
+    List is too long (12 elements, expected <= 10)
+
+
+Some motivating use cases:
+
+```Python
+discount = 0.0
+if (mo := re.search(r'(\d+)% discount', advertisement)):
+    discount = float(mo.group(1)) / 100.0
+
+# tmp variable for loop
+while (block := f.read(256)) != '':
+    process(block)
+
+# in list comprehension
+[clean_name.title() for name in names
+ if (clean_name := normalize('NFC', name)) in allowed_names]
+```
+
 # Function Basics
+
+## Positional-only parameters (since 3.8)
+
+There is a new function parameter syntax / to indicate that some function parameters must be specified positionally and cannot be used as keyword arguments. This is the same notation shown by help() for C functions annotated with Larry Hastings’ Argument Clinic tool.
+
+In the following example, parameters a and b are positional-only, while c or d can be positional or keyword, and e or f are required to be keywords:
+
+```Python
+def f(a, b, /, c, d, *, e, f):
+    print(a, b, c, d, e, f)
+```
+The following is a valid call:
+
+```Python
+f(10, 20, 30, d=40, e=50, f=60)
+
+# However, these are invalid calls:
+
+f(10, b=20, c=30, d=40, e=50, f=60)   # b cannot be a keyword argument
+f(10, 20, 30, 40, 50, f=60)           # e must be a keyword argument
+```
 
 
 ```python
@@ -573,6 +630,103 @@ outter()
     d: 8
 
 
+## Lambda
+
+[ref](https://realpython.com/python-testing/)
+Definition
+
+```Python
+>>> lambda x: x
+```
+
+- The keyword: lambda
+- A bound variable: x
+- A body: x
+    
+Use `lambda` like an expression
+```Python
+>>> (lambda x: x + 1)(2)
+3
+
+>>> (lambda x, y: x + y)(2, 3)
+5
+
+>>> add_one = lambda x: x + 1
+>>> add_one(2)
+3
+```
+
+Check the inside of `lambda` and regular function
+```Python
+>>> import dis
+>>> add = lambda x, y: x + y
+>>> type(add)
+<class 'function'>
+>>> dis.dis(add)
+  1           0 LOAD_FAST                0 (x)
+              2 LOAD_FAST                1 (y)
+              4 BINARY_ADD
+              6 RETURN_VALUE
+>>> add
+<function <lambda> at 0x7f30c6ce9ea0>
+```
+
+Traceback
+
+Arguments
+
+```Python
+>>> (lambda x, y, z: x + y + z)(1, 2, 3)
+6
+>>> (lambda x, y, z=3: x + y + z)(1, 2)
+6
+>>> (lambda x, y, z=3: x + y + z)(1, y=2)
+6
+>>> (lambda *args: sum(args))(1,2,3)
+6
+>>> (lambda **kwargs: sum(kwargs.values()))(one=1, two=2, three=3)
+6
+>>> (lambda x, *, y=0, z=0: x + y + z)(1, y=2, z=3)
+6
+```
+
+
+Closure
+```Python
+def outer_func(x):
+    y = 4
+    return lambda z: x + y + z
+
+for i in range(3):
+    closure = outer_func(i)
+    print(f"closure({i+5}) = {closure(i+5)}")
+```
+
+
+### Appropriate Uses of Lambda Expressions
+- combined with `map()`, `filter()`, `reduce`
+```Python
+>>> list(map(lambda x: x.upper(), ['cat', 'dog', 'cow']))
+['CAT', 'DOG', 'COW']
+>>> list(filter(lambda x: 'o' in x, ['cat', 'dog', 'cow']))
+['dog', 'cow']
+>>> from functools import reduce
+>>> reduce(lambda acc, x: f'{acc} | {x}', ['cat', 'dog', 'cow'])
+'cat | dog | cow'
+```
+- key function in `.sort()` and `sorted()`
+```Python
+>>> ids = ['id1', 'id2', 'id30', 'id3', 'id22', 'id100']
+>>> print(sorted(ids)) # Lexicographic sort
+['id1', 'id100', 'id2', 'id22', 'id3', 'id30']
+>>> sorted_ids = sorted(ids, key=lambda x: int(x[2:])) # Integer sort
+>>> print(sorted_ids)
+['id1', 'id2', 'id3', 'id22', 'id30', 'id100']
+```
+- UI framework
+- Strongly suggest not to write lambda function with > 1 line
+https://stackoverflow.com/questions/1233448/no-multiline-lambda-in-python-why-not
+
 # Exception Handling
 
 [Tutorial 1](https://www.programiz.com/python-programming/exception-handling)
@@ -662,234 +816,25 @@ class Solution:
         
 ```
 
-# Lambda
+# Object Oriented Design (OOD)
 
-[ref](https://realpython.com/python-testing/)
-Definition
+### isinstance(object, classinfo)
+Return True if the object argument is an instance of the classinfo argument, or of a (direct, indirect, or virtual) subclass thereof.
 
+If classinfo is a tuple of type objects (or recursively, other such tuples) or a Union Type of multiple types, return True if object is an instance of any of the types.
+
+### issubclass(class, classinfo)
+Return True if class is a subclass (direct, indirect, or virtual) of classinfo. A class is considered a subclass of itself. 
+
+# I/O related
+
+## interact with prompt
+
+### input()
+If the prompt argument is present, it is written to standard output without a trailing newline. The function then reads a line from input, converts it to a string (stripping a trailing newline), and returns that. When EOF is read, EOFError is raised.
 ```Python
->>> lambda x: x
-```
-
-- The keyword: lambda
-- A bound variable: x
-- A body: x
-    
-Use `lambda` like an expression
-```Python
->>> (lambda x: x + 1)(2)
-3
-
->>> (lambda x, y: x + y)(2, 3)
-5
-
->>> add_one = lambda x: x + 1
->>> add_one(2)
-3
-```
-
-Check the inside of `lambda` and regular function
-```Python
->>> import dis
->>> add = lambda x, y: x + y
->>> type(add)
-<class 'function'>
->>> dis.dis(add)
-  1           0 LOAD_FAST                0 (x)
-              2 LOAD_FAST                1 (y)
-              4 BINARY_ADD
-              6 RETURN_VALUE
->>> add
-<function <lambda> at 0x7f30c6ce9ea0>
-```
-
-Traceback
-
-Arguments
-
-```Python
->>> (lambda x, y, z: x + y + z)(1, 2, 3)
-6
->>> (lambda x, y, z=3: x + y + z)(1, 2)
-6
->>> (lambda x, y, z=3: x + y + z)(1, y=2)
-6
->>> (lambda *args: sum(args))(1,2,3)
-6
->>> (lambda **kwargs: sum(kwargs.values()))(one=1, two=2, three=3)
-6
->>> (lambda x, *, y=0, z=0: x + y + z)(1, y=2, z=3)
-6
-```
-
-
-Closure
-```Python
-def outer_func(x):
-    y = 4
-    return lambda z: x + y + z
-
-for i in range(3):
-    closure = outer_func(i)
-    print(f"closure({i+5}) = {closure(i+5)}")
-```
-
-## Appropriate Uses of Lambda Expressions
-- combined with `map()`, `filter()`, `reduce`
-```Python
->>> list(map(lambda x: x.upper(), ['cat', 'dog', 'cow']))
-['CAT', 'DOG', 'COW']
->>> list(filter(lambda x: 'o' in x, ['cat', 'dog', 'cow']))
-['dog', 'cow']
->>> from functools import reduce
->>> reduce(lambda acc, x: f'{acc} | {x}', ['cat', 'dog', 'cow'])
-'cat | dog | cow'
-```
-- key function in `.sort()` and `sorted()`
-```Python
->>> ids = ['id1', 'id2', 'id30', 'id3', 'id22', 'id100']
->>> print(sorted(ids)) # Lexicographic sort
-['id1', 'id100', 'id2', 'id22', 'id3', 'id30']
->>> sorted_ids = sorted(ids, key=lambda x: int(x[2:])) # Integer sort
->>> print(sorted_ids)
-['id1', 'id2', 'id3', 'id22', 'id30', 'id100']
-```
-- UI framework
-- Strongly suggest not to write lambda function with > 1 line
-https://stackoverflow.com/questions/1233448/no-multiline-lambda-in-python-why-not
-
-# Deque
-
-Deques are a generalization of stacks and queues (the name is pronounced “deck” and is short for “double-ended queue”). Deques support thread-safe, memory efficient appends and *pops from either side of the deque with approximately the same O(1) performance in either direction*.
-                                                  
-Python implements deque by doubly linked list. So
-- Deque is easier to extend than list
-- Deque[3] is slow as the linked list needs to be traversed
-
-Compared to 'list', which incur O(n) memory movement costs for pop(0) and insert(0, v) operations which change both the size and position of the underlying data representation.
-
-	
-
-### Available methods
-
-`append(x)`
-Add x to the right side of the deque.
-
-`appendleft(x)`
-Add x to the left side of the deque.
-
-`clear()`
-Remove all elements from the deque leaving it with length 0.
-
-`copy()`
-Create a shallow copy of the deque.
-
-New in version 3.5.
-
-`count(x)`
-Count the number of deque elements equal to x.
-
-New in version 3.2.
-
-`extend(iterable)`
-Extend the right side of the deque by appending elements from the iterable argument.
-
-`extendleft(iterable)`
-Extend the left side of the deque by appending elements from iterable. Note, the series of left appends results in reversing the order of elements in the iterable argument.
-
-`index(x[, start[, stop]])`
-Return the position of x in the deque (at or after index start and before index stop). Returns the first match or raises ValueError if not found.
-
-New in version 3.5.
-
-`insert(i, x)`
-Insert x into the deque at position i.
-
-If the insertion would cause a bounded deque to grow beyond maxlen, an IndexError is raised.
-
-New in version 3.5.
-
-`pop()`
-Remove and return an element from the right side of the deque. If no elements are present, raises an IndexError.
-
-`popleft()`
-Remove and return an element from the left side of the deque. If no elements are present, raises an IndexError.
-
-`remove(value)`
-Remove the first occurrence of value. If not found, raises a ValueError.
-
-`rotate(n=1)`
-Rotate the deque n steps to the right. If n is negative, rotate to the left.
-
-When the deque is not empty, rotating one step to the right is equivalent to d.appendleft(d.pop()), and rotating one step to the left is equivalent to d.append(d.popleft()).
-
-Deque objects also provide one read-only attribute:
-
-### deque recipes
-see https://docs.python.org/3.9/library/collections.html#deque-recipes
-
-
-```python
-# https://www.geeksforgeeks.org/deque-in-python/
-# https://docs.python.org/3.9/library/collections.html#collections.deque
-
-from collections import deque
-
-history = deque()
-
-history.append('China')
-history.append('Britain')
-history.append('Greece')
-history
-```
-
-
-
-
-    deque(['China', 'Britain', 'Greece'])
-
-
-
-
-```python
-print(history[0])
-print(len(history))
-```
-
-    China
-    3
-
-
-
-```python
-nations = deque()
-
-nations.appendleft('China')
-nations.appendleft('Korea')
-nations.appendleft('USA')
-nations
-```
-
-
-
-
-    deque(['USA', 'Korea', 'China'])
-
-
-
-
-```python
-nations[0]
-```
-
-
-
-
-    'USA'
-
-
-
-
-```python
-
+>>> s = input("$$ ")
+$$ What are you doing
+>>> s
+'What are you doing'
 ```

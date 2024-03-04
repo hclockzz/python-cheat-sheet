@@ -2298,6 +2298,105 @@ print(hex_base) # 305441741
 ## deque
 
 
+Deques are a generalization of stacks and queues (the name is pronounced “deck” and is short for “double-ended queue”). Deques support thread-safe, memory efficient appends and *pops from either side of the deque with approximately the same O(1) performance in either direction*.
+                                                  
+Python implements deque by doubly linked list. So
+- Deque is easier to extend than list
+- Deque[3] is slow as the linked list needs to be traversed
+
+Compared to 'list', which incur O(n) memory movement costs for pop(0) and insert(0, v) operations which change both the size and position of the underlying data representation.
+
+	
+
+### Available methods
+
+`append(x)`
+Add x to the right side of the deque.
+
+`appendleft(x)`
+Add x to the left side of the deque.
+
+`clear()`
+Remove all elements from the deque leaving it with length 0.
+
+`copy()`
+Create a shallow copy of the deque.
+
+New in version 3.5.
+
+`count(x)`
+Count the number of deque elements equal to x.
+
+New in version 3.2.
+
+`extend(iterable)`
+Extend the right side of the deque by appending elements from the iterable argument.
+
+`extendleft(iterable)`
+Extend the left side of the deque by appending elements from iterable. Note, the series of left appends results in reversing the order of elements in the iterable argument.
+
+`index(x[, start[, stop]])`
+Return the position of x in the deque (at or after index start and before index stop). Returns the first match or raises ValueError if not found.
+
+New in version 3.5.
+
+`insert(i, x)`
+Insert x into the deque at position i.
+
+If the insertion would cause a bounded deque to grow beyond maxlen, an IndexError is raised.
+
+New in version 3.5.
+
+`pop()`
+Remove and return an element from the right side of the deque. If no elements are present, raises an IndexError.
+
+`popleft()`
+Remove and return an element from the left side of the deque. If no elements are present, raises an IndexError.
+
+`remove(value)`
+Remove the first occurrence of value. If not found, raises a ValueError.
+
+`rotate(n=1)`
+Rotate the deque n steps to the right. If n is negative, rotate to the left.
+
+When the deque is not empty, rotating one step to the right is equivalent to d.appendleft(d.pop()), and rotating one step to the left is equivalent to d.append(d.popleft()).
+
+Deque objects also provide one read-only attribute:
+
+### deque recipes
+see https://docs.python.org/3.9/library/collections.html#deque-recipes
+
+
+```python
+from collections import deque
+
+nations = deque(['China', 'Britain', 'Greece'])
+print(nations[0])
+print(len(history))
+
+```
+
+    China
+    3
+
+
+
+```python
+nations = deque()
+
+nations.appendleft('China')
+nations.appendleft('Korea')
+nations.appendleft('USA')
+nations
+```
+
+
+
+
+    deque(['USA', 'Korea', 'China'])
+
+
+
 # Tuple
 
 **list** is unhashable, alternatively, we can use tuple.
