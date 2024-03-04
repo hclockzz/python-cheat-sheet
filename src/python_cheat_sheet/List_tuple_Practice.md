@@ -1,11 +1,10 @@
-# Topics:
-- List
-    - Sorting
-- Tuple
-- String
-    - Regular expression
+> I won't add an index of heading at the top any longer.
 
-# Init a list
+> Recommend to check out the markdown version, which in GitHub can be viewed with a table of content.
+
+# Fundamentals
+
+### Init a list
 
 
 ```python
@@ -33,7 +32,7 @@ lis
 
 
 
-# Equality
+### Equality
 
 
 ```python
@@ -47,7 +46,210 @@ if list(s) == list(t):
     yes
 
 
-# index()/get index of a specific item from list
+## Lists Can Contain Arbitrary Objects
+`a = [21.42, 'foobar', 3, 4, 'bark', False, 3.14159]`
+
+Lists can even contain complex objects, like functions, classes, and modules
+
+
+```python
+stack = [[]]
+stack.append([2,4])
+pin = stack.pop()
+pin
+```
+
+
+
+
+    [2, 4]
+
+
+
+
+```python
+class Node:
+    val = "A certain node"
+stack = []
+node = Node()
+stack.append((node,5))
+pin = stack.pop()
+pin
+```
+
+
+
+
+    (<__main__.Node at 0x10323e1a0>, 5)
+
+
+
+
+```python
+print(pin[0].val)
+```
+
+    A certain node
+
+
+## If an element in List
+
+
+```python
+target = [1,2]
+nums = [3,4,5,1,2,6]
+if target in nums:
+    print('yes')
+else:
+    print('no')
+    
+nums = [[3,4],[5],[1,2],[6]]
+if target in nums:
+    print('yes')
+else:
+    print('no')
+```
+
+    no
+    yes
+
+
+## Methods for list
+`.append()`
+
+`.insert(i, x)`: insert an iterm to a given position at i.
+
+### Adding items to list
+
+
+```python
+li = [11, 19, 21, 24, 25, 27]
+print(li+[31])
+```
+
+    [11, 19, 21, 24, 25, 27, 31]
+
+
+
+```python
+li.insert(-1,28)
+li
+```
+
+
+
+
+    [11, 19, 21, 24, 25, 28, 27]
+
+
+
+
+```python
+li.insert(0, 7)
+print(li)
+
+li.insert(0, 9)
+print(li)
+```
+
+    [7, 11, 19, 21, 24, 25, 27]
+    [9, 7, 11, 19, 21, 24, 25, 27]
+
+
+### Remove item
+- remove()
+- pop()
+- del
+
+
+```python
+# The remove() method removes the specified item:
+
+thislist = ["apple", "banana", "cherry"]
+# thislist.remove("banana")
+print(thislist.remove("banana"))
+print(thislist)
+```
+
+    None
+    ['apple', 'cherry']
+
+
+
+```python
+# The pop() method removes the specified index, (or the last item if index is not specified):
+
+thislist = ["apple", "banana", "cherry"]
+thislist.pop()
+print(thislist)
+```
+
+    ['apple', 'banana']
+
+
+
+```python
+# The del keyword removes the specified index:
+
+thislist = ["apple", "banana", "cherry"]
+del thislist[0]
+print(thislist)
+```
+
+    ['banana', 'cherry']
+
+
+
+```python
+# The del keyword can also delete the list completely:
+
+thislist = ["apple", "banana", "cherry"]
+del thislist
+thislist
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-18-8f550f36b72e> in <module>
+          3 thislist = ["apple", "banana", "cherry"]
+          4 del thislist
+    ----> 5 thislist
+    
+
+    NameError: name 'thislist' is not defined
+
+
+
+```python
+# The clear() method empties the list:
+
+
+thislist = ["apple", "banana", "cherry"]
+thislist.clear()
+print(thislist)
+```
+
+    []
+
+
+### count(x)
+count the number of x appearing in list
+
+
+```python
+a = [1,2,3,1,2,5,6,3,2]
+print(a.count(2))
+print(a.count(3))
+```
+
+    3
+    2
+
+
+### index()/get index of a specific item from list
 
 
 ```python
@@ -94,108 +296,119 @@ print('The index of i:', index)
     The index of i: 4
 
 
-## Lists Can Contain Arbitrary Objects
-`a = [21.42, 'foobar', 3, 4, 'bark', False, 3.14159]`
+### Range()
+first level of using range(): range(number)
 
-Lists can even contain complex objects, like functions, classes, and modules
-
-
-```python
-stack = [[]]
-stack.append([2,4])
-pin = stack.pop()
-pin
-```
-
-
-
-
-    [2, 4]
-
-
+second level of using range(): range(start, end, stop)
 
 
 ```python
-class Node:
-    val = "A certain node"
-stack = []
-node = Node()
-stack.append((node,5))
-pin = stack.pop()
-pin
+print(list(range(7)))
+
+li1 = list(range(7,-1,-1))
+print(li1)
+
+li = list(range(6//2,-1,-1))
+print(li)
 ```
 
+    [0, 1, 2, 3, 4, 5, 6]
+    [7, 6, 5, 4, 3, 2, 1, 0]
+    [3, 2, 1, 0]
 
 
-
-    (<__main__.Node at 0x10d2a7d10>, 5)
-
-
+### Enumerate ()
 
 
 ```python
-print(pin[0].val)
+nums = [11, 19, 21, 24, 25, 27]
+for i,num in enumerate(nums,1):
+    print(i,num)
 ```
 
-    A certain node
+    1 11
+    2 19
+    3 21
+    4 24
+    5 25
+    6 27
 
 
 
 ```python
-class Node:
-    val = "A certain node"
-stack = []
-node = Node()
-stack.append((node,5,[3]))
-pin = stack.pop()
-pin
+nums = [11, 19, 21, 24, 25, 27]
+for i,num in enumerate(nums):
+    print(i,num)
 ```
 
+    0 11
+    1 19
+    2 21
+    3 24
+    4 25
+    5 27
 
 
+### iter()
 
-    (<__main__.Node at 0x10d33ce90>, 5, [3])
+A good example to use iter can be:
 
+```
+def func():
+    element = next(arr) # so each time visit different element, useful when building binary tree
+    visit element
 
-
-### List of dictionaries
-
-https://stackoverflow.com/questions/44994028/create-a-list-of-dictionaries
+arr = iter(a certain list)
+```
 
 
 ```python
-# List of dictionaries
+# list of vowels
+vowels = ['a', 'e', 'i', 'o', 'u']
+vowels_iter = iter(vowels)
 
-stack = [[]]
-stack.append({"x":2,"y":4})
-pin = stack.pop()
-print("{} {}".format(pin["x"], pin["y"]))
+print(next(vowels_iter))    # 'a'
+print(next(vowels_iter))    # 'e'
+print(next(vowels_iter))    # 'i'
+print(next(vowels_iter))    # 'o'
+print(next(vowels_iter))    # 'u'
 ```
 
-    2 4
+    a
+    e
+    i
+    o
+    u
 
-
-# If an element in List
 
 
 ```python
-target = [1,2]
-nums = [3,4,5,1,2,6]
-if target in nums:
-    print('yes')
-else:
-    print('no')
-    
-nums = [[3,4],[5],[1,2],[6]]
-if target in nums:
-    print('yes')
-else:
-    print('no')
+# Check if iter() is empty, you can use for
+
+vowels = ['a', 'e', 'i', 'o', 'u']
+vowels_iter = iter(vowels)
+
+for vowel in vowels_iter:
+    print(vowel)
 ```
 
-    no
-    yes
+### Tild ~ operator in List
 
+
+```python
+for i in range(0, len(nums)):
+    print(nums[~i])
+```
+
+    27
+    25
+    24
+    21
+    19
+    11
+
+
+## Special Use Cases
 
 ### If given a list of strings A, check if string B is a sub-string for any elements in A
 
@@ -239,7 +452,7 @@ False
 ['abc-123', 'abc-456']
 ```
 
-# Init 2d list
+### Init 2d list
 
 https://stackoverflow.com/questions/6667201/how-to-define-a-two-dimensional-array-in-python
 
@@ -361,113 +574,14 @@ generate2D(3,5)
     [0, 2, 4, 6, 8]
 
 
-## Range()
-
 
 ```python
-li1 = list(range(7,-1,-1))
-print(li1)
-
-li = list(range(6//2,-1,-1))
-print(li)
-```
-
-    [7, 6, 5, 4, 3, 2, 1, 0]
-    [3, 2, 1, 0]
-
-
-# Enumerate ()
-
-
-```python
-nums = [11, 19, 21, 24, 25, 27]
-for i,num in enumerate(nums,1):
-    print(i,num)
-```
-
-    1 11
-    2 19
-    3 21
-    4 24
-    5 25
-    6 27
-
-
-
-```python
-nums = [11, 19, 21, 24, 25, 27]
-for i,num in enumerate(nums):
-    print(i,num)
-```
-
-    0 11
-    1 19
-    2 21
-    3 24
-    4 25
-    5 27
-
-
-# iter()
-
-A good example to use iter can be:
 
 ```
-def func():
-    element = next(arr) # so each time visit different element, useful when building binary tree
-    visit element
 
-arr = iter(a certain list)
-```
-
-
-```python
-# list of vowels
-vowels = ['a', 'e', 'i', 'o', 'u']
-vowels_iter = iter(vowels)
-
-print(next(vowels_iter))    # 'a'
-print(next(vowels_iter))    # 'e'
-print(next(vowels_iter))    # 'i'
-print(next(vowels_iter))    # 'o'
-print(next(vowels_iter))    # 'u'
-```
-
-    a
-    e
-    i
-    o
-    u
-
-
-
-```python
-# Check if iter() is empty, you can use for
-
-vowels = ['a', 'e', 'i', 'o', 'u']
-vowels_iter = iter(vowels)
-
-for vowel in vowels_iter:
-    print(vowel)
-```
-
-# Tild ~ operator in List
-
-
-```python
-for i in range(0, len(nums)):
-    print(nums[~i])
-```
-
-    27
-    25
-    24
-    21
-    19
-    11
-
-# Generate repeated elements in a list
+## Generate repeated elements in a list
 can be used to generate repeated number/characters in a list
+
 
 ```python
 lst = ['c' * 3]
@@ -655,122 +769,6 @@ np.random.choice(["0", "1"], size=(2,2), p=[1./4, 3./4])
     array([['1', '1'],
            ['1', '1']], dtype='<U1')
 
-
-
-# Adding items
-
-
-```python
-li = [11, 19, 21, 24, 25, 27]
-print(li+[31])
-```
-
-    [11, 19, 21, 24, 25, 27, 31]
-
-
-
-```python
-li.insert(-1,28)
-li
-```
-
-
-
-
-    [11, 19, 21, 24, 25, 28, 27]
-
-
-
-
-```python
-li.insert(0, 7)
-print(li)
-
-li.insert(0, 9)
-print(li)
-```
-
-    [7, 11, 19, 21, 24, 25, 27]
-    [9, 7, 11, 19, 21, 24, 25, 27]
-
-
-# Remove item
-- remove()
-- pop()
-- del
-
-
-```python
-# The remove() method removes the specified item:
-
-thislist = ["apple", "banana", "cherry"]
-# thislist.remove("banana")
-print(thislist.remove("banana"))
-print(thislist)
-```
-
-    None
-    ['apple', 'cherry']
-
-
-
-```python
-# The pop() method removes the specified index, (or the last item if index is not specified):
-
-thislist = ["apple", "banana", "cherry"]
-thislist.pop()
-print(thislist)
-```
-
-    ['apple', 'banana']
-
-
-
-```python
-# The del keyword removes the specified index:
-
-thislist = ["apple", "banana", "cherry"]
-del thislist[0]
-print(thislist)
-```
-
-    ['banana', 'cherry']
-
-
-
-```python
-# The del keyword can also delete the list completely:
-
-thislist = ["apple", "banana", "cherry"]
-del thislist
-thislist
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-18-8f550f36b72e> in <module>
-          3 thislist = ["apple", "banana", "cherry"]
-          4 del thislist
-    ----> 5 thislist
-    
-
-    NameError: name 'thislist' is not defined
-
-
-
-```python
-# The clear() method empties the list:
-
-
-thislist = ["apple", "banana", "cherry"]
-thislist.clear()
-print(thislist)
-```
-
-    []
 
 
 ## Add commas between list elements
@@ -2295,6 +2293,11 @@ print(hex_base) # 305441741
     305441741
 
 
+# Collection
+
+## deque
+
+
 # Tuple
 
 **list** is unhashable, alternatively, we can use tuple.
@@ -3146,6 +3149,22 @@ else:
 
     pattern found inside the string
 
+
+if use a variable containing special characters as a pattern, it would make match/search/sub fail.  In this case, use `re.escape(var)`
+
+
+```python
+filename = "Untitle (1).json"
+full_name = "/tmp/Untitle (1).json"
+re.sub(filename, "sensable.json", full_name) # output: /tmp/Untitle (1).json
+```
+
+
+```python
+filename = "Untitle (1).json"
+full_name = "/tmp/Untitle (1).json"
+re.sub(re.escape(filename), "sensable.json", full_name) # output: /tmp/sensable.json
+```
 
 
 ```python

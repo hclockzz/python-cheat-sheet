@@ -1,12 +1,6 @@
-# Topics:
-- Set
-- Dictionary
-    - Sorting
-    - Convert list to dictionary
-- defaultdict
-- Counter
-- OrderedDict
+> I won't add an index of heading at the top any longer.
 
+> Recommend to check out the markdown version, which in GitHub can be viewed with a table of content.
 
 
 ```python
@@ -584,16 +578,6 @@ for x, y in thisdict.items():
     
 ```
 
-### iterate over a dictionary
-By default iterate on keys
-```Python
-dct = {"a":12, "k":9, "p":23}
-for k in dct:
-    print(dct[k])
-
->> 12, 9, 23
-```
-
 ### keys()
 ```Python
 car = {
@@ -719,6 +703,27 @@ In this example, key 'b' already exists in d1, so its value is updated to 200, t
 >>> d1.update([('b', 200), ('d', 400)])
 >>> d1
 {'a': 10, 'b': 200, 'c': 30, 'd': 400}
+```
+### iterate over a dictionary
+use `.items()`
+```Python
+dct = {"a":12, "k":9, "p":23}
+for k, v in dct.items():
+    prinnt(f'{k}: {v}')
+
+>> a: 12
+>> k: 9
+>> p: 23
+```
+
+### iterate over a dictionary on key
+By default iterate on keys
+```Python
+dct = {"a":12, "k":9, "p":23}
+for k in dct:
+    print(dct[k])
+
+>> 12, 9, 23
 ```
 
 ### Copy a Dictionary
@@ -854,23 +859,54 @@ print(dict2-dict1)
     Counter({'c': 1})
 
 
-# Sort dictionary
+## Sort dictionary
+### Changes Since Python 3.7
+Since 3.7, python is insertion ordered.
+
+Official docs in [Python 3.6](https://docs.python.org/3.6/tutorial/datastructures.html#dictionaries)
+> Performing list(d.keys()) on a dictionary returns a list of all the keys used in the dictionary, in arbitrary order (if you want it sorted, just use sorted(d.keys()) instead).
+
+If want to retain insertion ordering in 3.6, use OrderedDict.
+
+Docs in [Python 3.7](https://docs.python.org/3.7/tutorial/datastructures.html#dictionaries)
+> Performing list(d) on a dictionary returns a list of all the keys used in the dictionary, in insertion order (if you want it sorted, just use sorted(d) instead). To check whether a single key is in the dictionary, use the in keyword.
+
+### sorted(dict.items(), key=func, reverse=True/False)
 key Parameter in Python sorted() function
 Based on the returned value of the key function, you can sort the given iterable.
 `sorted(iterable, key=len)`
 
+About `sorted`, from the https://docs.python.org/3.9/library/functions.html#sorted
+> key specifies a function of one argument that is used to extract a comparison key from each element in iterable (for example, key=str.lower). The default value is None (compare the elements directly).
+
+
+
 
 
 ```python
-# take the second element for sort
-def take_second(elem):
-    return elem[1]
+# sort by key
 
 # random list
 random = [(2, 2), (3, 4), (4, 1), (1, 3)]
 
 # sort list with key
-sorted_list = sorted(random, key=take_second)
+sorted_list = sorted(random, key=lambda x:x[0])
+
+# print list
+print('Sorted list:', sorted_list)
+```
+
+    Sorted list: [(1, 3), (2, 2), (3, 4), (4, 1)]
+
+
+
+```python
+# sort by value
+
+random = [(2, 2), (3, 4), (4, 1), (1, 3)]
+
+# sort list with key
+sorted_list = sorted(random, key=lambda x:x[1])
 
 # print list
 print('Sorted list:', sorted_list)
@@ -1046,6 +1082,58 @@ key_value[:3]
     
 
     TypeError: unhashable type: 'slice'
+
+
+### side notes about `sorted()`
+
+sort on complex objects
+```Python
+>>> student_tuples = [
+...     ('john', 'A', 15),
+...     ('jane', 'B', 12),
+...     ('dave', 'B', 10),
+... ]
+>>> sorted(student_tuples, key=lambda student: student[2])   # sort by age
+[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+
+>>> student_objects = [
+...     Student('john', 'A', 15),
+...     Student('jane', 'B', 12),
+...     Student('dave', 'B', 10),
+... ]
+>>> sorted(student_objects, key=lambda student: student.age)   # sort by age
+[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+```
+
+#### Sort with accessor, provided by `operator` module
+The key-function patterns shown above are very common, so Python provides convenience functions to make accessor functions easier and faster. The operator module has itemgetter(), attrgetter(), and a methodcaller() function.
+
+- itemgetter(), for a list/tuple
+- attrgetter(), for dict
+- methodcaller()
+  
+Using those functions, the above examples become simpler and faster:
+```Python
+>>>
+>>> from operator import itemgetter, attrgetter
+>>>
+>>> sorted(student_tuples, key=itemgetter(2))
+[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+>>>
+>>> sorted(student_objects, key=attrgetter('age'))
+[('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
+```
+**This is great.** The operator module functions allow multiple levels of sorting. For example, to sort by grade then by age:
+```Python
+>>>
+>>> sorted(student_tuples, key=itemgetter(1,2))
+[('john', 'A', 15), ('dave', 'B', 10), ('jane', 'B', 12)]
+>>>
+>>> sorted(student_objects, key=attrgetter('grade', 'age'))
+[('john', 'A', 15), ('dave', 'B', 10), ('jane', 'B', 12)]
+```
+
+> about sort stability, read [official doc](https://docs.python.org/3.9/howto/sorting.html#sort-stability-and-complex-sorts)
 
 
 # [Conversion from list to dic](https://appdividend.com/2019/11/12/how-to-convert-python-list-to-dictionary-example/)
@@ -1244,7 +1332,93 @@ print(nums['three'])
     []
 
 
-# Collection: Counter 
+# Collection
+
+## NameTuples
+
+https://www.geeksforgeeks.org/namedtuple-in-python/
+
+- A dictionary but can also be accessed by indexes
+
+```Python
+# Python code to demonstrate namedtuple() 
+      
+from collections import namedtuple 
+      
+# Declaring namedtuple()  
+Student = namedtuple('Student',['name','age','DOB'])  
+      
+# Adding values  
+S = Student('Nandini','19','2541997')  
+      
+# Access using index  
+print ("The Student age using index is : ",end ="")  
+print (S[1])  
+      
+# Access using name   
+print ("The Student name using keyname is : ",end ="")  
+print (S.name)
+
+# Access using getattr()
+print ("The Student DOB using getattr() is : ",end ="")
+print (getattr(S,'DOB'))
+
+
+# ---------------------
+# Output
+The Student age using index is : 19
+The Student name using keyname is : Nandini
+The Student DOB using getattr() is : 2541997
+```
+
+- _make() :- This function is used to return a namedtuple() from the iterable passed as argument.
+- _asdict() :- This function returns the OrderedDict() as constructed from the mapped values of namedtuple().
+- using “**” (double star) operator :- This function is used to convert a dictionary into the namedtuple().
+
+
+```Python
+# Python code to demonstrate namedtuple() and
+# _make(), _asdict() and "**" operator
+  
+# importing "collections" for namedtuple()
+import collections
+  
+# Declaring namedtuple()
+Student = collections.namedtuple('Student',['name','age','DOB'])
+  
+# Adding values
+S = Student('Nandini','19','2541997')
+  
+# initializing iterable 
+li = ['Manjeet', '19', '411997' ]
+  
+# initializing dict
+di = { 'name' : "Nikhil", 'age' : 19 , 'DOB' : '1391997' }
+  
+# using _make() to return namedtuple()
+print ("The namedtuple instance using iterable is  : ")
+print (Student._make(li))
+  
+# using _asdict() to return an OrderedDict()
+print ("The OrderedDict instance using namedtuple is  : ")
+print (S._asdict())
+  
+# using ** operator to return namedtuple from dictionary
+print ("The namedtuple instance from dict is  : ")
+print (Student(**di))
+
+
+# ---------------------
+# Output
+The namedtuple instance using iterable is  : 
+Student(name='Manjeet', age='19', DOB='411997')
+The OrderedDict instance using namedtuple is  : 
+OrderedDict([('name', 'Nandini'), ('age', '19'), ('DOB', '2541997')])
+The namedtuple instance from dict is  : 
+Student(name='Nikhil', age=19, DOB='1391997')
+```
+
+## Counter 
 
 The Counter() function in collections module takes an iterable or a mapping as the argument and returns a Dictionary. 
 
@@ -1401,7 +1575,7 @@ dict3
 
 
 
-## class collections.OrderedDict([items])
+## OrderedDict([items])
 
 ```Python
 popitem(last=True)
