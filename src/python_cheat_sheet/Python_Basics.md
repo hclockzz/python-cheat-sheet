@@ -826,6 +826,13 @@ If classinfo is a tuple of type objects (or recursively, other such tuples) or a
 ### issubclass(class, classinfo)
 Return True if class is a subclass (direct, indirect, or virtual) of classinfo. A class is considered a subclass of itself. 
 
+### vars(object)
+Return the __dict__ attribute for a module, class, instance, or any other object with a **__dict__** attribute.
+
+Without an argument, vars() acts like locals().
+
+A TypeError exception is raised if an object is specified but it doesn’t have a __dict__ attribute (for example, if its class defines the __slots__ attribute).
+
 # I/O related
 
 ## interact with prompt

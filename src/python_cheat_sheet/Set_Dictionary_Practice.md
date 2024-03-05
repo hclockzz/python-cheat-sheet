@@ -846,7 +846,7 @@ print(dict1-dict2)
 dict2['b'] = 1
 print(dict1-dict2)
 
-dict2['c'] = 1
+dict2['c'] =b 1
 print(dict1-dict2)
 print(dict2-dict1)
 ```
@@ -858,6 +858,32 @@ print(dict2-dict1)
     Counter({'b': 1})
     Counter({'c': 1})
 
+
+### Union Operator `|` and `|=` (sinice 3.9)
+
+read through https://peps.python.org/pep-0584/
+
+Dict union will return a new dict consisting of the left operand merged with the right operand, each of which must be a dict (or an instance of a dict subclass). If a key appears in both operands, the last-seen value (i.e. that from the right-hand operand) wins
+
+```Python
+>>> d = {'spam': 1, 'eggs': 2, 'cheese': 3}
+>>> e = {'cheese': 'cheddar', 'aardvark': 'Ethel'}
+>>> d | e
+{'spam': 1, 'eggs': 2, 'cheese': 'cheddar', 'aardvark': 'Ethel'}
+>>> e | d
+{'cheese': 3, 'aardvark': 'Ethel', 'spam': 1, 'eggs': 2}
+```
+
+
+
+```python
+The augmented assignment version operates in-place:
+```Python
+>>> d |= e
+>>> d
+{'spam': 1, 'eggs': 2, 'cheese': 'cheddar', 'aardvark': 'Ethel'}
+```
+```
 
 ## Sort dictionary
 ### Changes Since Python 3.7
@@ -1262,7 +1288,162 @@ print(listToDict(lstTuple))
     {'millie': 11, 'caleb': 21, 'finn': 19, 'sadie': 29, 'noah': 46}
 
 
-# Collection: The defaultdict
+# Collection
+
+
+## ChainMap
+A ChainMap groups multiple dicts or other mappings together to create a single, updateable view. It is often much faster than creating a new dictionary and running multiple update() calls.
+
+A ChainMap incorporates the underlying mappings **by reference**. So, if one of the underlying mappings gets updated, those changes will be reflected in ChainMap.
+- can be used to loop up an element acroos multiple dicts
+
+
+
+```python
+from collections import ChainMap
+
+baseline = {'music': 'bach', 'art': 'rembrandt'}
+adjustments = {'art': 'van gogh', 'opera': 'carmen'}
+list(ChainMap(adjustments, baseline))
+
+```
+
+
+
+
+    ['music', 'art', 'opera']
+
+
+
+
+```python
+#  This gives the same ordering as a series of dict.update() calls starting with the last mapping:
+combined = baseline.copy()
+combined.update(adjustments)
+list(combined)
+```
+
+
+
+
+    ['music', 'art', 'opera']
+
+
+
+```Python
+
+>>> from collections import ChainMap
+>>> numbers = {"one": 1, "two": 2}
+>>> letters = {"a": "A", "b": "B"}
+>>> cm = ChainMap(numbers, letters)
+>>> cm
+ChainMap({'one': 1, 'two': 2}, {'a': 'A', 'b': 'B'})
+>>> cm.keys()
+KeysView(ChainMap({'one': 1, 'two': 2}, {'a': 'A', 'b': 'B'}))
+>>> [k for k in cm.keys()]
+['a', 'b', 'one', 'two']
+```
+
+Can combine with other dict-variants, like OrderedDict, defaultdict
+```Python
+>>> from collections import OrderedDict, defaultdict
+>>> numbers = OrderedDict(one=1, two=2)
+>>> letters = defaultdict(str, {"a": "A", "b": "B"})
+>>> cmm = ChainMap(numbers, letters)
+>>> cmm.keys()
+KeysView(ChainMap(OrderedDict([('one', 1), ('two', 2)]), defaultdict(<class 'str'>, {'a': 'A', 'b': 'B'})))
+>>>
+>>> [k for k in cmm.keys()]
+['a', 'b', 'one', 'two']n
+```
+
+available methods:
+
+### maps
+A user updateable list of mappings. The list is ordered from first-searched to last-searched. It is the only stored state and can be modified to change which mappings are searched. The list should always contain at least one mapping.
+
+### new_child(m=None)
+With .new_child(), you can create a subcontext that you can update without altering any of the existing mappings. 
+
+Changed in version 3.4: The optional m parameter was added.
+
+### parents
+returns a new ChainMap instance with all the mappings in the underlying chain map except the first one.
+
+
+```python
+from collections import ChainMap
+
+mom = {"name": "Jane", "age": 31}
+dad = {"name": "John", "age": 35}
+
+family = ChainMap(mom, dad)
+family
+
+
+son = {"name": "Mike", "age": 0}
+family = family.new_child(son)
+
+for person in family.maps:
+    print(person)
+
+# note, son is added at the first position in the mapping list
+```
+
+    {'name': 'Mike', 'age': 0}
+    {'name': 'Jane', 'age': 31}
+    {'name': 'John', 'age': 35}
+
+
+
+```python
+from collections import ChainMap
+
+mom = {"name": "Jane", "age": 31}
+dad = {"name": "John", "age": 35}
+son = {"name": "Mike", "age":  0}
+
+family = ChainMap(son, mom, dad)
+
+family.parents
+```
+
+
+
+
+    ChainMap({'name': 'Jane', 'age': 31}, {'name': 'John', 'age': 35})
+
+
+
+### Recipes
+
+Example of simulating Python’s internal lookup chain:
+```Python
+import builtins
+pylookup = ChainMap(locals(), globals(), vars(builtins))
+```
+
+Example of letting user specified command-line arguments take precedence over environment variables which in turn take precedence over default values:
+
+```Python
+import os, argparse
+
+defaults = {'color': 'red', 'user': 'guest'}
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', '--user')
+parser.add_argument('-c', '--color')
+namespace = parser.parse_args()
+command_line_args = {k: v for k, v in vars(namespace).items() if v is not None}
+
+combined = ChainMap(command_line_args, os.environ, defaults)
+print(combined['color'])
+print(combined['user'])
+```
+
+
+
+## The defaultdict
 
 The defaultdict works exactly like a python dictionary, except for it does not throw KeyError when you 
 try to access a non-existent key.
@@ -1331,8 +1512,6 @@ print(nums['three'])
     defaultdict(<class 'list'>, {'one': [1], 'two': [2, 3]})
     []
 
-
-# Collection
 
 ## NameTuples
 
@@ -1420,11 +1599,51 @@ Student(name='Nikhil', age=19, DOB='1391997')
 
 ## Counter 
 
-The Counter() function in collections module takes an iterable or a mapping as the argument and returns a Dictionary. 
+The Counter() function in collections module **takes an iterable or a mapping** as the argument and returns a Dictionary. 
 
 In this dictionary, a key is an element in the iterable or the mapping and value is the number of times that element exists in the iterable or the mapping.
 
 https://stackabuse.com/introduction-to-pythons-collections-module/#thecounter
+
+### elements()
+Return an iterator over elements repeating each as many times as its count. Elements are returned in the order first encountered. If an element’s count is less than one, elements() will ignore it.
+```Python
+>>>
+c = Counter(a=4, b=2, c=0, d=-2)
+sorted(c.elements())
+['a', 'a', 'a', 'a', 'b', 'b']
+```
+
+### most_common([n])
+Return a list of the n most common elements and their counts from the most common to the least. If n is omitted or None, most_common() returns all elements in the counter. Elements with equal counts are ordered in the order first encountered:
+```Python
+>>>
+### Counter('abracadabra').most_common(3)
+[('a', 5), ('b', 2), ('r', 2)]
+```
+
+### subtract([iterable-or-mapping])
+Elements are subtracted from an iterable or from another mapping (or counter). Like dict.update() but subtracts counts instead of replacing them. Both inputs and outputs may be zero or negative.
+
+```Python
+>>>
+c = Counter(a=4, b=2, c=0, d=-2)
+d = Counter(a=1, b=2, c=3, d=4)
+c.subtract(d)
+c
+Counter({'a': 3, 'b': 0, 'c': -3, 'd': -6})
+```
+New in version 3.2.
+
+### total()
+Compute the sum of the counts.
+```Python
+>>>
+c = Counter(a=10, b=5, c=0)
+c.total()
+15
+New in version 3.10.
+```
 
 
 ```python
@@ -1473,6 +1692,18 @@ print(cnt.most_common(2))
 
 ```python
 cnt = Counter({1:3,2:4})
+cnt
+```
+
+
+
+
+    Counter({2: 4, 1: 3})
+
+
+
+
+```python
 deduct = {1:1, 2:2}
 cnt.subtract(deduct)
 print(cnt)
@@ -1575,13 +1806,28 @@ dict3
 
 
 
-## OrderedDict([items])
+## OrderedDict
 
+Sinice 3.7, dict() retains insertion order. **So OrderedDict still being needed? In some cases, yes**
+
+OrderedDict won't become redundant in Python 3.7 because OrderedDict is not just a dict that retains insertion order, it also offers an order dependent method, `OrderedDict.move_to_end()`, and supports `reversed()` iteration*.
+
+Moreover, equality comparisons with OrderedDict are order sensitive and this is still not the case for dict in Python 3.7
 ```Python
-popitem(last=True)
-
-move_to_end(key, last=True)
+>>> OrderedDict([(1,1), (2,2)]) == OrderedDict([(2,2), (1,1)]) 
+False
+>>> dict([(1,1), (2,2)]) == dict([(2,2), (1,1)]) 
+True
 ```
+
+### Specific Methods
+**popitem(last=True)**
+
+The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.
+
+**move_to_end(key, last=True)**
+Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist.
+
 
 
 ```python
@@ -1715,17 +1961,74 @@ print(d1 == od1)
     True
 
 
+### Implement RSU using OrderedDict
+
+
 
 ```python
 
+from collections import OrderedDict
+from time import time
+
+class TimeBoundedLRU:
+    "LRU Cache that invalidates and refreshes old entries."
+
+    def __init__(self, func, maxsize=128, maxage=30):
+        self.cache = OrderedDict()      # { args : (timestamp, result)}
+        self.func = func
+        self.maxsize = maxsize
+        self.maxage = maxage
+
+    def __call__(self, *args):
+        if args in self.cache:
+            self.cache.move_to_end(args)
+            timestamp, result = self.cache[args]
+            if time() - timestamp <= self.maxage:
+                return result
+        result = self.func(*args)
+        self.cache[args] = time(), result
+        if len(self.cache) > self.maxsize:
+            self.cache.popitem(0)
+        return result
+```
 
 
+```python
+class MultiHitLRUCache:
+    """ LRU cache that defers caching a result until
+        it has been requested multiple times.
 
+        To avoid flushing the LRU cache with one-time requests,
+        we don't cache until a request has been made more than once.
 
+        也就是说达到一定数量的hit之后, 才值得cache (use cache_after as the bar)
 
+    """
 
+    def __init__(self, func, maxsize=128, maxrequests=4096, cache_after=1):
+        self.requests = OrderedDict()   # { uncached_key : request_count }
+        self.cache = OrderedDict()      # { cached_key : function_result }
+        self.func = func
+        self.maxrequests = maxrequests  # max number of uncached requests
+        self.maxsize = maxsize          # max number of stored return values
+        self.cache_after = cache_after
 
-
+    def __call__(self, *args):
+        if args in self.cache:
+            self.cache.move_to_end(args)
+            return self.cache[args]
+        result = self.func(*args)
+        self.requests[args] = self.requests.get(args, 0) + 1
+        if self.requests[args] <= self.cache_after:
+            self.requests.move_to_end(args)
+            if len(self.requests) > self.maxrequests:
+                self.requests.popitem(0)
+        else:
+            self.requests.pop(args, None)
+            self.cache[args] = result
+            if len(self.cache) > self.maxsize:
+                self.cache.popitem(0)
+        return result
 ```
 
 # Leetcode Code Challenges
