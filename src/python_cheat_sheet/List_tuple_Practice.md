@@ -408,7 +408,600 @@ for i in range(0, len(nums)):
     11
 
 
+## Generate random int list
+
+randint(...) method of numpy.random.mtrand.RandomState instance
+    randint(low, high=None, size=None, dtype=int)
+
+    Return random integers from `low` (inclusive) to `high` (exclusive).
+
+    Return random integers from the "discrete uniform" distribution of
+    the specified dtype in the "half-open" interval [`low`, `high`). If
+    `high` is None (the default), then results are from [0, `low`).
+
+    .. note::
+        New code should use the `~numpy.random.Generator.integers`
+        method of a `~numpy.random.Generator` instance instead;
+        please see the :ref:`random-quick-start`.
+
+    size : int or tuple of ints, optional
+        Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
+        ``m * n * k`` samples are drawn.  Default is None, in which case a
+        single value is returned.
+    dtype : dtype, optional
+        Desired dtype of the result. Byteorder must be native.
+        The default value is int.
+
+
+```python
+import numpy as np
+```
+
+
+```python
+numbers = np.random.randint(0,20,5)
+# print(numbers.array.split(numbers,','))
+print(list(numbers))
+```
+
+    [11, 5, 17, 7, 3]
+
+
+
+```python
+def get_max_list(numbers) -> int:
+    max = numbers[0]
+    for item in numbers:
+        if item > max:
+            max = item
+    return max
+    
+numbers = np.random.randint(1,20,6)
+print(numbers)
+get_max_list(numbers)
+```
+
+    [18 16 18 18  7  2]
+
+
+
+
+
+    18
+
+
+
+### generate binary numbers
+
+list only contain 0 or 1
+
+
+```python
+import numpy as np
+np.random.randint(2, size=10)
+```
+
+
+
+
+    array([1, 1, 0, 0, 1, 0, 1, 1, 0, 0])
+
+
+
+
+```python
+
+np.random.randint(2, size=(8,8))
+```
+
+
+
+
+    array([[0, 1, 0, 1, 0, 1, 1, 1],
+           [1, 0, 0, 0, 0, 1, 1, 1],
+           [0, 0, 1, 0, 1, 0, 0, 1],
+           [0, 1, 1, 1, 0, 0, 1, 1],
+           [1, 1, 0, 1, 0, 1, 0, 1],
+           [0, 1, 1, 0, 0, 1, 0, 0],
+           [0, 1, 0, 0, 1, 1, 0, 1],
+           [1, 1, 1, 1, 0, 1, 1, 0]])
+
+
+
+
+```python
+np.random.choice([0, 1], size=(8,8), p=[1./4, 3./4])
+```
+
+
+
+
+    array([[1, 1, 1, 1, 1, 0, 1, 1],
+           [0, 1, 1, 1, 1, 1, 1, 1],
+           [1, 1, 1, 1, 1, 1, 0, 1],
+           [1, 1, 0, 1, 1, 1, 1, 0],
+           [1, 0, 1, 1, 1, 1, 1, 0],
+           [1, 1, 1, 1, 1, 1, 0, 1],
+           [1, 1, 1, 1, 1, 1, 1, 1],
+           [0, 0, 0, 1, 1, 1, 1, 1]])
+
+
+
+
+```python
+matrix = [[1, 0, 1, 0, 1, 1, 0, 0],
+       [0, 1, 1, 1, 1, 0, 0, 1],
+       [1, 0, 1, 1, 1, 0, 1, 0],
+       [1, 1, 1, 1, 1, 0, 1, 1],
+       [1, 0, 1, 1, 1, 0, 0, 0],
+       [1, 1, 1, 1, 0, 1, 1, 1],
+       [0, 0, 1, 1, 0, 0, 0, 0],
+       [1, 1, 1, 0, 1, 0, 0, 0]]
+matrix
+```
+
+
+
+
+    [[1, 0, 1, 0, 1, 1, 0, 0],
+     [0, 1, 1, 1, 1, 0, 0, 1],
+     [1, 0, 1, 1, 1, 0, 1, 0],
+     [1, 1, 1, 1, 1, 0, 1, 1],
+     [1, 0, 1, 1, 1, 0, 0, 0],
+     [1, 1, 1, 1, 0, 1, 1, 1],
+     [0, 0, 1, 1, 0, 0, 0, 0],
+     [1, 1, 1, 0, 1, 0, 0, 0]]
+
+
+
+
+```python
+np.random.choice(["0", "1"], size=(2,2), p=[1./4, 3./4])
+```
+
+
+
+
+    array([['1', '1'],
+           ['1', '1']], dtype='<U1')
+
+
+
+## List slicing
+
+
+
+```python
+numbers = [11, 17, 10,  4,  2, 14]
+nums = list(numbers)
+print(nums[1:3])
+print(nums[:1])
+```
+
+    [17, 10]
+    [11]
+
+
+
+```python
+nums = [10, 12]
+print(nums[:2])
+```
+
+    [10, 12]
+
+
+
+```python
+li = [8,7,2]
+print(li[1:3])
+print(li[2:])
+```
+
+    [7, 2]
+    [2]
+
+
+
+```python
+[8,5,1,7,10,12]
+```
+
+
+```python
+li = [11, 17, 10]
+li[:5]
+```
+
+
+
+
+    [11, 17, 10]
+
+
+
+
+```python
+# slicing array with 2 elements
+
+li = [11,4]
+mid = int(len(li)/2)
+print(li[0:mid])
+print(li[mid:])
+```
+
+    [11]
+    [4]
+
+
+
+```python
+# slicing array with only 1 element
+
+li = [11]
+mid = int(len(li)/2)
+print(li[0:mid])
+print(li[mid:])
+```
+
+    []
+    [11]
+
+
+
+```python
+for i in range(2,3):
+    print(i)
+```
+
+    2
+
+
+
+```python
+string = "Hello"
+print(string[:-5])
+print(string[-5:])
+```
+
+    
+    Hello
+
+
+### :: double colon slicing
+
+Here is a bit of an [explanation](https://stackoverflow.com/questions/48638951/list-in-reverse-order-python) of the [::-1] operation:
+
+Slicing notation is of the format [start_point:end_point:step]
+
+- The start_point is not specified, this becomes the length of the list so the operation starts at the end.
+- The end_point is also not specified, this becomes -1 so the operation will end at the start.
+- The step is -1, so it will iterate backwards in steps of 1 (i.e. every element of the list).
+
+This will create a shallow copy of your original list. This means the list you pass into reverse(s) will remain the same.
+
+```
+>>> x = [1, 2, 3]
+>>> y = x[::-1]
+>>> x
+[1, 2, 3]
+>>> y
+[3, 2, 1]
+```
+
+## Common Operations on List
+
+### Reverse list order
+
+
+```python
+lis = list(range(2,10))
+print(lis)
+```
+
+    [2, 3, 4, 5, 6, 7, 8, 9]
+
+
+
+```python
+lis.reverse()
+print(lis)
+```
+
+    [9, 8, 7, 6, 5, 4, 3, 2]
+
+
+
+```python
+for i in reversed(lis):  # reversed return iterable object, not list
+    print(i)
+```
+
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+
+
+To be exercise:
+
+[items()](https://www.geeksforgeeks.org/python-dictionary-items-method/)
+
+[append and extend](https://www.geeksforgeeks.org/append-extend-python/)
+
+[Python scope](https://www.w3schools.com/python/python_scope.asp)
+
+
+### Minimum and Maximum
+
+
+```python
+import numpy as np
+
+def get_max_list(numbers) -> int:
+    max = numbers[0]
+    for item in numbers:
+        if item > max:
+            max = item
+    return max
+    
+numbers = np.random.randint(1,20,6)
+print(numbers)
+get_max_list(numbers)
+```
+
+    [ 3 14 15 15  1 11]
+
+
+
+
+
+    15
+
+
+
+
+```python
+li =[2, 5, 1, 3, 4]
+print(min(li))
+print(max(li))
+```
+
+    1
+    5
+
+
+### List comprehension
+
+
+```python
+li = [2,5,1,3,4]
+
+lk = [val for val in li]
+lk
+```
+
+
+
+
+    [2, 5, 1, 3, 4]
+
+
+
+
+```python
+if 5 in lk:
+    print("Yes")
+else:
+    print("No")
+```
+
+    Yes
+
+
+
+```python
+def rep(x,n):
+    return [x for i in range(1, n+1)]
+
+rep(3,5)
+```
+
+
+
+
+    [3, 3, 3, 3, 3]
+
+
+
+
+```python
+def odd(x):
+    if x/2 == 0:
+        return False
+    else:
+        return True
+    
+def substite(xs):
+    return ["BOOM!" if x < 10 else "BANG!" for x in xs if odd(x)]
+
+substite([1,3,4,1,2,35,1])
+```
+
+
+
+
+    ['BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BANG!', 'BOOM!']
+
+
+
+*Question:* Does a formula exist for list comprehension?
+
+
+```python
+chr?
+```
+
+
+    [0;31mSignature:[0m [0mchr[0m[0;34m([0m[0mi[0m[0;34m,[0m [0;34m/[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+    [0;31mDocstring:[0m Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.
+    [0;31mType:[0m      builtin_function_or_method
+
+
+
+```python
+# return a list upper case from A to Z
+upperCase = [chr(i) for i in range(ord('A'),ord('Z')+1)]
+def removeNonUpperCase(st):
+    return [c for c in st if c in upperCase]
+
+removeNonUpperCase('AFkajflASDFfla;K')
+```
+
+
+
+
+    ['A', 'F', 'A', 'S', 'D', 'F', 'K']
+
+
+
+### Sum a list
+
+
+```python
+li = [3,1,2,4,2,4,7]
+sum(li)
+```
+
+
+
+
+    23
+
+
+
+
+```python
+# get the square sum
+
+sum([int(i) ** 2 for i in li])
+```
+
+
+
+
+    99
+
+
+
+
+```python
+# Partial sum
+li = [3,1,2,4,2,4,7]
+sum(li[0:3])
+```
+
+
+
+
+    6
+
+
+
+
+```python
+matrix = [[1,3,1],[1,5,1],[4,2,1]]
+sum([matrix[i][0] for i in range(1,3)])
+```
+
+
+
+
+    5
+
+
+
+
+```python
+sum(matrix[0][:0])
+```
+
+
+
+
+    0
+
+
+
+### Get the mean of a list
+
+
+```python
+li = [-2,1,-3,4,-1,2,1,-5,4]
+sum(li)/(len(li))
+```
+
+
+
+
+    0.1111111111111111
+
+
+
+
+```python
+li[:-1]
+```
+
+
+
+
+    [-2, 1, -3, 4, -1, 2, 1, -5]
+
+
+
 ## Special Use Cases
+
+### Flatten list
+
+reference:
+[stack overflow](https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists)
+
+
+```python
+from pandas.core.common import flatten
+
+li = [1,[4,[6]]]
+# li = []
+iter_li = iter(li)
+
+print(list(flatten(li)))
+print(isinstance(li[1], list))    
+```
+
+    [1, 4, 6]
+    True
+
+
+
+```python
+import itertools
+
+li_1 = [1,[4,[6]]]
+flatten = itertools.chain.from_iterable
+flatten(li_1)
+```
+
+
+
+
+    <itertools.chain at 0x1042f0700>
+
+
 
 ### If given a list of strings A, check if string B is a sub-string for any elements in A
 
@@ -579,7 +1172,7 @@ generate2D(3,5)
 
 ```
 
-## Generate repeated elements in a list
+### Generate repeated elements in a list
 can be used to generate repeated number/characters in a list
 
 
@@ -588,834 +1181,7 @@ lst = ['c' * 3]
 # ['c', 'c', 'c']
 ```
 
-# Generate random int list
-
-
-```python
-import numpy as np
-```
-
-
-```python
-def list_sum(numbers)->int:
-    sum = 0
-    for item in numbers:
-        sum+=item
-    return sum
-
-numbers = np.random.randint(0,20,5)
-# print(numbers.array.split(numbers,','))
-print(list(numbers))
-
-# list_sum(numbers)
-```
-
-    [18, 15, 11, 7, 14]
-
-
-
-```python
-def list_production(numbers) -> int:
-    product = 1
-    for item in numbers:
-        product *= item
-    return product
-    
-numbers = np.random.randint(1,20,6)
-print(numbers)
-list_production(numbers)
-```
-
-    [ 2 17 16  4  1 15]
-
-
-
-
-
-    32640
-
-
-
-
-```python
-def get_max_list(numbers) -> int:
-    max = numbers[0]
-    for item in numbers:
-        if item > max:
-            max = item
-    return max
-    
-numbers = np.random.randint(1,20,6)
-print(numbers)
-get_max_list(numbers)
-```
-
-    [11 17 10  4  2 14]
-
-
-
-
-
-    17
-
-
-
-
-```python
-# generate 6 numbers, ranging between 1-30
-
-arr = np.random.randint(1,30,6)
-np.sort(arr)
-```
-
-
-
-
-    array([11, 19, 21, 24, 25, 27])
-
-
-
-## generate binary numbers
-
-list only contain 0 or 1
-
-
-```python
-import numpy as np
-np.random.randint(2, size=10)
-```
-
-
-
-
-    array([1, 1, 0, 0, 1, 0, 1, 1, 0, 0])
-
-
-
-
-```python
-
-np.random.randint(2, size=(8,8))
-```
-
-
-
-
-    array([[0, 1, 0, 1, 0, 1, 1, 1],
-           [1, 0, 0, 0, 0, 1, 1, 1],
-           [0, 0, 1, 0, 1, 0, 0, 1],
-           [0, 1, 1, 1, 0, 0, 1, 1],
-           [1, 1, 0, 1, 0, 1, 0, 1],
-           [0, 1, 1, 0, 0, 1, 0, 0],
-           [0, 1, 0, 0, 1, 1, 0, 1],
-           [1, 1, 1, 1, 0, 1, 1, 0]])
-
-
-
-
-```python
-np.random.choice([0, 1], size=(8,8), p=[1./4, 3./4])
-```
-
-
-
-
-    array([[1, 1, 1, 1, 1, 0, 1, 1],
-           [0, 1, 1, 1, 1, 1, 1, 1],
-           [1, 1, 1, 1, 1, 1, 0, 1],
-           [1, 1, 0, 1, 1, 1, 1, 0],
-           [1, 0, 1, 1, 1, 1, 1, 0],
-           [1, 1, 1, 1, 1, 1, 0, 1],
-           [1, 1, 1, 1, 1, 1, 1, 1],
-           [0, 0, 0, 1, 1, 1, 1, 1]])
-
-
-
-
-```python
-matrix = [[1, 0, 1, 0, 1, 1, 0, 0],
-       [0, 1, 1, 1, 1, 0, 0, 1],
-       [1, 0, 1, 1, 1, 0, 1, 0],
-       [1, 1, 1, 1, 1, 0, 1, 1],
-       [1, 0, 1, 1, 1, 0, 0, 0],
-       [1, 1, 1, 1, 0, 1, 1, 1],
-       [0, 0, 1, 1, 0, 0, 0, 0],
-       [1, 1, 1, 0, 1, 0, 0, 0]]
-matrix
-```
-
-
-
-
-    [[1, 0, 1, 0, 1, 1, 0, 0],
-     [0, 1, 1, 1, 1, 0, 0, 1],
-     [1, 0, 1, 1, 1, 0, 1, 0],
-     [1, 1, 1, 1, 1, 0, 1, 1],
-     [1, 0, 1, 1, 1, 0, 0, 0],
-     [1, 1, 1, 1, 0, 1, 1, 1],
-     [0, 0, 1, 1, 0, 0, 0, 0],
-     [1, 1, 1, 0, 1, 0, 0, 0]]
-
-
-
-
-```python
-np.random.choice(["0", "1"], size=(2,2), p=[1./4, 3./4])
-```
-
-
-
-
-    array([['1', '1'],
-           ['1', '1']], dtype='<U1')
-
-
-
-## Add commas between list elements
-
-
-```python
-list(numbers) # add comma betweens nums in numbers
-numbers
-```
-
-
-
-
-    array([11, 17, 10,  4,  2, 14])
-
-
-
-# List slicing
-
-
-
-```python
-numbers = [11, 17, 10,  4,  2, 14]
-nums = list(numbers)
-print(nums[1:3])
-print(nums[:1])
-```
-
-    [17, 10]
-    [11]
-
-
-
-```python
-nums = [10, 12]
-print(nums[:2])
-```
-
-    [10, 12]
-
-
-
-```python
-li = [8,7,2]
-print(li[1:3])
-print(li[2:])
-```
-
-    [7, 2]
-    [2]
-
-
-
-```python
-[8,5,1,7,10,12]
-```
-
-
-```python
-li = [11, 17, 10]
-li[:5]
-```
-
-
-
-
-    [11, 17, 10]
-
-
-
-
-```python
-# slicing array with 2 elements
-
-li = [11,4]
-mid = int(len(li)/2)
-print(li[0:mid])
-print(li[mid:])
-```
-
-    [11]
-    [4]
-
-
-
-```python
-# slicing array with only 1 element
-
-li = [11]
-mid = int(len(li)/2)
-print(li[0:mid])
-print(li[mid:])
-```
-
-    []
-    [11]
-
-
-
-```python
-for i in range(2,3):
-    print(i)
-```
-
-    2
-
-
-
-```python
-string = "Hello"
-print(string[:-5])
-print(string[-5:])
-```
-
-    
-    Hello
-
-
-## Reverse list order
-
-
-```python
-for i in range(2,n-1).reverse()
-    print(i)
-```
-
-
-      File "<ipython-input-25-a3e92cfab943>", line 1
-        for i in range(2,n-1).reverse()
-                                       ^
-    SyntaxError: invalid syntax
-
-
-
-
-```python
-lis = list(range(2,10))
-lis
-```
-
-
-
-
-    [2, 3, 4, 5, 6, 7, 8, 9]
-
-
-
-
-```python
-list(range(-1,-1,-1))
-```
-
-
-
-
-    []
-
-
-
-
-```python
-list(range(1,0,-1))
-```
-
-
-
-
-    [1]
-
-
-
-
-```python
-for i in reversed(lis):
-    print(i)
-```
-
-    9
-    8
-    7
-    6
-    5
-    4
-    3
-    2
-
-
-
-```python
-def reverse(lis): 
-    return stakc
-
-reverse_lis = reverse(lis)
-reverse_lis
-```
-
-
-
-
-    [9, 8, 7, 6, 5, 4, 3, 2]
-
-
-
-### Slicing explanation
-
-Here is a bit of an [explanation](https://stackoverflow.com/questions/48638951/list-in-reverse-order-python) of the [::-1] operation:
-
-Slicing notation is of the format [start_point:end_point:step]
-
-- The start_point is not specified, this becomes the length of the list so the operation starts at the end.
-- The end_point is also not specified, this becomes -1 so the operation will end at the start.
-- The step is -1, so it will iterate backwards in steps of 1 (i.e. every element of the list).
-
-This will create a shallow copy of your original list. This means the list you pass into reverse(s) will remain the same.
-
-```
->>> x = [1, 2, 3]
->>> y = x[::-1]
->>> x
-[1, 2, 3]
->>> y
-[3, 2, 1]
-```
-
-To be exercise:
-
-[items()](https://www.geeksforgeeks.org/python-dictionary-items-method/)
-
-[append and extend](https://www.geeksforgeeks.org/append-extend-python/)
-
-[Python scope](https://www.w3schools.com/python/python_scope.asp)
-
-
-# Minimum and Maximum
-
-
-```python
-import numpy as np
-
-def get_max_list(numbers) -> int:
-    max = numbers[0]
-    for item in numbers:
-        if item > max:
-            max = item
-    return max
-    
-numbers = np.random.randint(1,20,6)
-print(numbers)
-get_max_list(numbers)
-```
-
-    [ 3 14 15 15  1 11]
-
-
-
-
-
-    15
-
-
-
-
-```python
-li =[2, 5, 1, 3, 4]
-print(min(li))
-print(max(li))
-```
-
-    1
-    5
-
-
-## List comprehension
-
-
-```python
-li = [2,5,1,3,4]
-
-lk = [val for val in li]
-lk
-```
-
-
-
-
-    [2, 5, 1, 3, 4]
-
-
-
-
-```python
-if 5 in lk:
-    print("Yes")
-else:
-    print("No")
-```
-
-    Yes
-
-
-
-```python
-def rep(x,n):
-    return [x for i in range(1, n+1)]
-
-rep(3,5)
-```
-
-
-
-
-    [3, 3, 3, 3, 3]
-
-
-
-
-```python
-def odd(x):
-    if x/2 == 0:
-        return False
-    else:
-        return True
-    
-def substite(xs):
-    return ["BOOM!" if x < 10 else "BANG!" for x in xs if odd(x)]
-
-substite([1,3,4,1,2,35,1])
-```
-
-
-
-
-    ['BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BANG!', 'BOOM!']
-
-
-
-*Question:* Does a formula exist for list comprehension?
-
-
-```python
-chr?
-```
-
-
-```python
-# return a list upper case from A to Z
-upperCase = [chr(i) for i in range(ord('A'),ord('Z')+1)]
-def removeNonUpperCase(st):
-    return [c for c in st if c in upperCase]
-
-removeNonUpperCase('AFkajflASDFfla;K')
-```
-
-
-
-
-    ['A', 'F', 'A', 'S', 'D', 'F', 'K']
-
-
-
-## Partial funtions
-
-
-```python
-def rep(x, n):
-    return [x for i in range(n)]
-def repit(xs):
-    rep3 = lambda x: rep(x, 3)
-    return map(rep3, xs)
-
-list(repit(['a',4,'J']))
-```
-
-
-
-
-    [['a', 'a', 'a'], [4, 4, 4], ['J', 'J', 'J']]
-
-
-
-## Filter
-
-
-```python
-filter(lambda x: x>3, [1,5,3,2,1,6,4,3,2])
-```
-
-
-
-
-    <filter at 0x106523910>
-
-
-
-
-```python
-xgreter3 = list(filter(lambda x: x>3, [1,5,3,2,1,6,4,3,2]))
-xgreter3
-```
-
-
-
-
-    [5, 6, 4]
-
-
-
-## Reduce
-
-
-```python
-
-from math import sqrt
-from functools import reduce
-def stdDev(A):
-    add = lambda x, y: x+y
-    N = float(len(A))
-    mu = reduce(add, A, 0)/N
-    tot = reduce(add, [(a - mu)**2 for a in A], 0) 
-    return sqrt(tot/N)
-
-print(stdDev([13, 23, 12, 44, 55]))
-```
-
-
-```python
-def forall(A):
-    return reduce(lambda x, y:  x and y, A, True)
-
-print(forall([True, True, True, True]))
-print(forall([True, True, False, True]))
-```
-
-    True
-    False
-
-
-
-```python
-def sum2():
-    return reduce(lambda x, y:  x+y, range(1, 6), 0)
-
-sum2()
-```
-
-
-
-
-    15
-
-
-
-
-```python
-def countEver():
-    return sum([1 for n in range(0,6) if n%2 == 0])
-
-countEver()
-```
-
-
-
-
-    3
-
-
-
-
-```python
-def indexSet(x, B):
-    for index, b in enumerate(B):
-        if x == b:
-            return index
-    return -1
-
-indexSet(3,[4,6,1,2,3,7,8])
-```
-
-
-
-
-    4
-
-
-
-
-```python
-# wrong
-def indexSet(x, B):
-    return sum([1 for b in B if b!=x])
-
-indexSet(3,[4,6,1,2,3,7,8])
-```
-
-
-
-
-    6
-
-
-
-
-```python
-from functools import reduce
-
-def indexSet(t, B):
-    return reduce(lambda x, y: x+1 if (y!=t), B,0)
-
-indexSet(3,[4,6,1,2,3,7,8])
-```
-
-
-      File "<ipython-input-6-a865aab46b80>", line 4
-        return reduce(lambda x, y: x+1 if (y!=t), B,0)
-                                                ^
-    SyntaxError: invalid syntax
-
-
-
-
-```python
-def indexSet(x,B):
-    return filter(lambda b: b == x, B)
-
-list(indexSet(3,[4,6,1,2,3,7,8]))
-```
-
-
-
-
-    [3]
-
-
-
-# Flatten list
-
-reference:
-[stack overflow](https://stackoverflow.com/questions/952914/how-to-make-a-flat-list-out-of-list-of-lists)
-
-
-```python
-from pandas.core.common import flatten
-
-li = [1,[4,[6]]]
-# li = []
-iter_li = iter(li)
-
-print(list(flatten(li)))
-print(isinstance(li[1], list))    
-```
-
-    [1, 4, 6]
-    True
-
-
-
-```python
-import itertools
-
-li_1 = [1,[4,[6]]]
-flatten = itertools.chain.from_iterable
-list(flatten(li_1))
-```
-
-
-    ---------------------------------------------------------------------------
-
-    TypeError                                 Traceback (most recent call last)
-
-    <ipython-input-25-c6a0d972e2ee> in <module>
-          3 li_1 = [1,[4,[6]]]
-          4 flatten = itertools.chain.from_iterable
-    ----> 5 list(flatten(li_1))
-    
-
-    TypeError: 'int' object is not iterable
-
-
-## Sum a list
-
-
-```python
-li = [3,1,2,4,2,4,7]
-sum(li)
-```
-
-
-
-
-    23
-
-
-
-
-```python
-# get the square sum
-
-sum([int(i) ** 2 for i in li])
-```
-
-
-
-
-    99
-
-
-
-
-```python
-# Partial sum
-li = [3,1,2,4,2,4,7]
-sum(li[0:3])
-```
-
-
-
-
-    6
-
-
-
-
-```python
-matrix = [[1,3,1],[1,5,1],[4,2,1]]
-sum([matrix[i][0] for i in range(1,3)])
-```
-
-
-
-
-    5
-
-
-
-
-```python
-sum(matrix[0][:0])
-```
-
-
-
-
-    0
-
-
-
-# Yield generator
+### Yield generator
 
 
 ```python
@@ -1543,33 +1309,6 @@ print(sys.getsizeof(nums_squared_gc))
 ```
 
     128
-
-
-## Get the mean of a list
-
-
-```python
-li = [-2,1,-3,4,-1,2,1,-5,4]
-sum(li)/(len(li))
-```
-
-
-
-
-    0.1111111111111111
-
-
-
-
-```python
-li[:-1]
-```
-
-
-
-
-    [-2, 1, -3, 4, -1, 2, 1, -5]
-
 
 
 # String and list
@@ -1759,7 +1498,7 @@ b[:-1]
 
 
 
-# Intersection between two lists
+## Intersection between two lists
 
 https://stackoverflow.com/questions/3697432/how-to-find-list-intersection
 
@@ -1847,6 +1586,42 @@ kv_list[0][0]
     'a'
 
 
+
+if two lists are not in the same size, elements may be discarded
+
+```python
+>>> a = range(4)
+>>> b = range(5)
+>>> zip(a,b)
+<zip object at 0x103052a80>
+>>> for i in zip(a,b):
+...     print(i)
+...
+(0, 0)
+(1, 1)
+(2, 2)
+(3, 3)
+```
+
+### unzip
+We can use the zip function to unzip a list as well. This time, we need an input of a list with an asterisk before it.
+
+```Python
+full_name_list = [('Joe', 'Schmoe', 23),
+                  ('Earnst', 'Ehlmann', 65),
+                  ('Thomas', 'Fischer', 11),
+                  ('Martin', 'Walter', 36),
+                  ('Charles', 'Rogan', 83)]
+
+first_name, last_name, age = list(zip(*full_name_list))
+print(f"first name: {first_name}\nlast name: {last_name} \nage: {age}")
+
+# Output
+
+# first name: ('Joe', 'Earnst', 'Thomas', 'Martin', 'Charles')
+# last name: ('Schmoe', 'Ehlmann', 'Fischer', 'Walter', 'Rogan')
+# age: (23, 65, 11, 36, 83)
+```
 
 # Sort a list
 
@@ -2037,7 +1812,7 @@ numbers_set_sorted
 
 
 
-## About cmp
+## About cmp (deprecated)
 
 If I have to think sorting in a way of comparator, I can use `functools.cmp_to_key`.
 
@@ -2139,16 +1914,6 @@ class Solution:
 ```python
 
 ```
-
-# Underscore _ in Python
-https://hackernoon.com/understanding-the-underscore-of-python-309d1a029edc
-
-There are 5 cases for using the underscore in Python.
-- For storing the value of last expression in interpreter.
-- For ignoring the specific values. (so-called “I don’t care”)
-- To give special meanings and functions to name of vartiables or functions.
-- To use as ‘Internationalization(i18n)’ or ‘Localization(l10n)’ functions.
-- To separate the digits of number literal value.
 
 
 ```python
@@ -2293,8 +2058,6 @@ print(hex_base) # 305441741
     305441741
 
 
-# Collection
-
 ## deque
 
 
@@ -2399,7 +2162,9 @@ nations
 
 # Tuple
 
-**list** is unhashable, alternatively, we can use tuple.
+some benefits of using tuple:
+- **list** is unhashable, alternatively, we can use tuple.
+    - so can put tuple as the key in a dictionary
 
 
 ```python
@@ -2545,7 +2310,9 @@ print(my_tuple[:])
     ('p', 'r', 'o', 'g', 'r', 'a', 'm', 'i', 'z')
 
 
-## Changing a Tuple
+## operations on a tuple
+
+### Changing a Tuple
 
 Unlike lists, tuples are immutable.
 
@@ -2611,8 +2378,14 @@ del my_tuple
 print(my_tuple)
 ```
 
-### Tuple method
 
+
+### other Tuple methods
+
+- .count()
+- .index()
+- membership
+  
 ```Python
 my_tuple = ('a', 'p', 'p', 'l', 'e',)
 
@@ -2683,7 +2456,7 @@ tupl
 
 
 
-## Reverse tuple
+### Reverse tuple
 
 
 ```python
@@ -2735,7 +2508,9 @@ print(bTuple)
     (50,)
 
 
-## Unpack the following tuple into 4 variables
+## Special use cases
+
+### Unpack the following tuple into 4 variables
 
 
 ```python
@@ -2751,7 +2526,7 @@ for var in [a,b,c,d]:
     40
 
 
-## Swap the following two tuples
+### Swap the following two tuples
 
 
 ```python
@@ -2791,7 +2566,7 @@ print(tuple1)
     (11, [222, 33], 44, 55)
 
 
-## Sort a tuple of tuples by 2nd item
+### Sort a tuple of tuples by 2nd item
 
 
 ```python
@@ -2840,7 +2615,7 @@ print(tuple1.count(50))
     2
 
 
-## Check if all items in the following tuple are the same
+### Check if all items in the following tuple are the same
 
 
 ```python

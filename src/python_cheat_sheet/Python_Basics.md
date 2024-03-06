@@ -162,6 +162,127 @@ Return the “identity” of an object. This is an integer which is **guaranteed
 
 *CPython implementation detail*: **This is the address of the object in memory**.
 
+### Underscore _ in Python
+https://hackernoon.com/understanding-the-underscore-of-python-309d1a029edc
+
+There are 5 cases for using the underscore in Python.
+- For storing the value of last expression in interpreter.
+- For ignoring the specific values. (so-called “I don’t care”)
+- To give special meanings and functions to name of vartiables or functions.
+- To use as ‘Internationalization(i18n)’ or ‘Localization(l10n)’ functions.
+- To separate the digits of number literal value.
+
+
+```python
+# 1. When used in interpreter
+>>> 10 
+10 
+>>> _ 
+10 
+>>> _ * 3 
+30 
+>>> _ * 20 
+600
+```
+
+
+
+
+    600
+
+
+
+
+```python
+# 2. For Ignoring the values
+
+# Ignore a value when unpacking
+x, _, y = (1, 2, 3) # x = 1, y = 3 
+x,y
+```
+
+
+
+
+    (1, 3)
+
+
+
+
+```python
+# Ignore the index
+for _ in range(5):     
+    print("Hi")
+```
+
+    Hi
+    Hi
+    Hi
+    Hi
+    Hi
+
+
+
+```python
+# 3. Give special meanings to name of variables and functions
+
+# _single_leading_underscore
+
+# This convention is used for declaring private variables, functions, methods and classes in a module. 
+# Anything with this convention are ignored in from module import *. 
+
+# However, of course, Python does not supports truly private, so we can not force somethings private ones 
+# and also can call it directly from other modules. 
+
+class _Base: # private class
+    _hidden_factor = 2 # private variable
+```
+
+
+```python
+# single_trailing_underscore_
+
+# This convention could be used for avoiding conflict with Python keywords or built-ins. 
+# You might not use it often.
+
+list_ = List.objects.get(1) # Avoid conflict with 'list' built-in type
+
+```
+
+
+```python
+# __double_leading_and_trailing_underscore__
+
+# This convention is used for special variables or methods (so-called “magic method”) such as__init__, __len__. 
+# These methods provides special syntactic features or does special things. 
+# For example, __file__ indicates the location of Python file, __eq__ is executed when a == b expression is excuted. 
+
+class A:
+    def __init__(self, a): # use special method '__init__' for initializing
+        self.a = a
+```
+
+
+```python
+# 4. To separate the digits of number literal value
+
+# This feature was added in Python 3.6. 
+# It is used for separating digits of numbers using underscore for readability.
+
+dec_base = 1_000_000
+bin_base = 0b_1111_0000
+hex_base = 0x_1234_abcd
+
+print(dec_base) # 1000000
+print(bin_base) # 240
+print(hex_base) # 305441741
+```
+
+    1000000
+    240
+    305441741
+
+
 # Number Basics
 
 ## What is the maximum possible value of an integer in Python ?
@@ -458,6 +579,36 @@ while (block := f.read(256)) != '':
 
 # Function Basics
 
+### use `?` to get pydoc for a method
+
+
+```python
+chr?
+```
+
+
+    [0;31mSignature:[0m [0mchr[0m[0;34m([0m[0mi[0m[0;34m,[0m [0;34m/[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+    [0;31mDocstring:[0m Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.
+    [0;31mType:[0m      builtin_function_or_method
+
+
+
+```python
+input?
+```
+
+
+    [0;31mSignature:[0m [0minput[0m[0;34m([0m[0mprompt[0m[0;34m=[0m[0;34m''[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+    [0;31mDocstring:[0m
+    Forward raw_input to frontends
+    
+    Raises
+    ------
+    StdinNotImplementedError if active frontend doesn't support stdin.
+    [0;31mFile:[0m      ~/.pyenv/versions/3.10.13/lib/python3.10/site-packages/ipykernel/kernelbase.py
+    [0;31mType:[0m      method
+
+
 ## Positional-only parameters (since 3.8)
 
 There is a new function parameter syntax / to indicate that some function parameters must be specified positionally and cannot be used as keyword arguments. This is the same notation shown by help() for C functions annotated with Larry Hastings’ Argument Clinic tool.
@@ -631,6 +782,66 @@ outter()
 
 
 ## Lambda
+
+## Map, Filter and Reduce
+
+### partial func
+
+```Python
+def rep(x, n):
+    return [x for i in range(n)]
+def repit(xs):
+    rep3 = lambda x: rep(x, 3)
+    return map(rep3, xs)
+
+list(repit(['a',4,'J']))
+>>> [['a', 'a', 'a'], [4, 4, 4], ['J', 'J', 'J']]
+```
+
+### map
+Map applies a function to all the items in an input_list. Here is the blueprint:
+`map(function_to_apply, list_of_inputs)`
+
+```Python
+items = [1, 2, 3, 4, 5]
+squared = []
+for i in items:
+    squared.append(i**2)
+
+# use map
+squared = map(lambda x: x*2, items)
+>>> squared
+<map object at 0x102e54100>
+>>> list(squared)
+[2, 4, 6, 8, 10]
+```
+
+### filter
+filter creates a list of elements for which a function returns true.
+
+```Python
+number_list = range(-5, 5)
+less_than_zero = list(filter(lambda x: x < 0, number_list))
+print(less_than_zero)
+
+# Output: [-5, -4, -3, -2, -1]
+```
+
+### reduce
+Reduce is a really useful function for performing some computation on a list and returning the result. It applies a rolling computation to sequential pairs of values in a list. For example, if you wanted to compute the product of a list of integers.
+    
+```Python
+product = 1
+list = [1, 2, 3, 4]
+for num in list:
+    product = product * num
+
+# product = 24
+
+# if use reduce
+from functools import reduce
+product = reduce(lambda a,b: a*b, list)
+>>> product
 
 [ref](https://realpython.com/python-testing/)
 Definition
@@ -818,6 +1029,8 @@ class Solution:
 
 # Object Oriented Design (OOD)
 
+## built-in methods for OO
+
 ### isinstance(object, classinfo)
 Return True if the object argument is an instance of the classinfo argument, or of a (direct, indirect, or virtual) subclass thereof.
 
@@ -833,9 +1046,58 @@ Without an argument, vars() acts like locals().
 
 A TypeError exception is raised if an object is specified but it doesn’t have a __dict__ attribute (for example, if its class defines the __slots__ attribute).
 
+## Generators
+
+### iterable, iterator, iteration
+
+**iterable**
+An iterable is any object in Python which has an __iter__ or a __getitem__ method defined which returns an iterator or can take indexes (You can read more about them here). In short an iterable is any object which can provide us with an iterator. 
+
+**iterator**
+An iterator is any object in Python which has a next (Python2) or __next__ method defined. That’s it. 
+
+
+**iteration**
+In simple words it is the process of taking an item from something e.g a list. When we use a loop to loop over something it is called iteration. It is the name given to the process itself. 
+
+
+
+### generators
+
+Generators are iterators, but you can only iterate over them once. It’s because they do not store all the values in memory, they generate the values on the fly. 
+
+Why use generators:
+- Generators are best for calculating large sets of results (particularly calculations involving loops themselves) where you don’t want to allocate the memory for all results at the same time.
+
+
+```Python
+def generator_function():
+    for i in range(10):
+        yield i
+
+for item in generator_function():
+    print(item)
+
+# Output: 0
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+```
+
+
+```python
+
+```
+
 # I/O related
 
-## interact with prompt
+## read from stdin
 
 ### input()
 If the prompt argument is present, it is written to standard output without a trailing newline. The function then reads a line from input, converts it to a string (stripping a trailing newline), and returns that. When EOF is read, EOFError is raised.
@@ -844,4 +1106,23 @@ If the prompt argument is present, it is written to standard output without a tr
 $$ What are you doing
 >>> s
 'What are you doing'
+```
+
+### `sys.stdin` 
+
+Python sys module stdin is used by the interpreter for standard input. Internally, it calls the input() function. The input string is appended with a newline character (\n) in the end. So, you can use the rstrip() function to remove it.
+
+```Python
+import sys
+
+for line in sys.stdin:
+    if 'Exit' == line.rstrip():
+        break
+    print(f'Processing Message from sys.stdin *****{line}*****')
+print("Done")
+```
+
+
+```python
+
 ```
