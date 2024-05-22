@@ -1378,7 +1378,7 @@ if t is None:
     empty string too
 
 
-# Split a list with strings using delimiter
+# Split a list into strings using delimiter, and join back
 
 
 ```python
