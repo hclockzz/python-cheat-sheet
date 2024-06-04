@@ -2950,6 +2950,8 @@ print(str2.isdigit())
 
 
 # regular expression
+some good sites to learn the complete rules:
+https://www.w3schools.com/jsref/jsref_regexp_charset_not.asp
 
 
 ```python
