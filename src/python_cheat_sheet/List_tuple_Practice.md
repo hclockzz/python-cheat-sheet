@@ -869,6 +869,14 @@ substite([1,3,4,1,2,35,1])
     ['BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BOOM!', 'BANG!', 'BOOM!']
 
 
+#### Multi for loop in a single list comprehension
+
+```Python
+>>> list_of_sentences = [['The','cat','chases', 'the', 'mouse','.'],['The','dog','barks','.']]
+>>> all_words = [word for sentence in list_of_sentences for word in sentence]
+>>> all_words
+['The', 'cat', 'chases', 'the', 'mouse', '.', 'The', 'dog', 'barks', '.']
+```
 
 *Question:* Does a formula exist for list comprehension?
 
